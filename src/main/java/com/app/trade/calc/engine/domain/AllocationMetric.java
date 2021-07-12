@@ -4,21 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class AllocationMath {
+public class AllocationMetric {
     private String account;
     private String stock;
     private String type;
 
     private double quantityHeld;
-    private double TARGET_MARKET_VALUE;
-    private double MAX_SHARES;
-    private double ALL_IN_POSITION;
-    private double SUGGESTED_FINAL_POSITION;
-    private double SUGGESTED_TRADE_ALLOCATION;
+    private double targetMarketValue;
+    private double maxShares;
+    private double allInPosition;
+    private double suggestedFinalPosition;
+    private double suggestedTradeAllocation;
 
     private long quantity;
 
-    public AllocationMath(
+    public AllocationMetric(
             String account,
             String stock,
             String type,
@@ -34,11 +34,11 @@ public class AllocationMath {
         this.stock = stock;
         this.type = type;
         this.quantityHeld = quantityHeld;
-        this.TARGET_MARKET_VALUE = targetMarketValue;
-        this.MAX_SHARES = maxShares;
-        this.ALL_IN_POSITION = allInPosition;
-        this.SUGGESTED_FINAL_POSITION = suggestedFinalPosition;
-        this.SUGGESTED_TRADE_ALLOCATION = suggestedTradeAllocation;
+        this.targetMarketValue = targetMarketValue;
+        this.maxShares = maxShares;
+        this.allInPosition = allInPosition;
+        this.suggestedFinalPosition = suggestedFinalPosition;
+        this.suggestedTradeAllocation = suggestedTradeAllocation;
         this.quantity = quantity;
     }
 }

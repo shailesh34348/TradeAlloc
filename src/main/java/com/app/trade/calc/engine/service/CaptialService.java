@@ -6,6 +6,7 @@ import com.app.trade.calc.engine.model.Target;
 import com.app.trade.calc.engine.repository.CapitalRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,8 +36,10 @@ public class CaptialService {
             List<Target> filteredTargetList = capital.getTargetList().stream().filter(x -> holdingStockSet.contains(x.getStock())).collect(Collectors.toList());
             capital.setTargetList(filteredTargetList);
 
-            //TODO: check if targetList and holdinglist is not empty to prevent exception
-            Double targetMarketValue = this.calculateTargetMarketValue(filteredTargetList.get(0).getPercent(), capital.getHoldingList().get(0).getCapital().getCapital());
+            float percent = !CollectionUtils.isEmpty(filteredTargetList) ? filteredTargetList.get(0).getPercent() : 0;
+            double capitalValue = !CollectionUtils.isEmpty(capital.getHoldingList()) ? capital.getHoldingList().get(0).getCapital().getCapital() : 0;
+
+            Double targetMarketValue = this.calculateTargetMarketValue(percent, capitalValue);
             capital.setTargetMarketValue(targetMarketValue);
         }
         return capitalList;

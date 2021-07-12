@@ -1,7 +1,7 @@
 package com.app.trade.calc.engine.service;
 
 import com.app.trade.calc.engine.domain.Allocation;
-import com.app.trade.calc.engine.domain.AllocationMath;
+import com.app.trade.calc.engine.domain.AllocationMetric;
 import com.app.trade.calc.engine.model.Capital;
 import com.app.trade.calc.engine.model.Holding;
 import com.app.trade.calc.engine.model.Trade;
@@ -31,7 +31,7 @@ public class AllocationService {
         this.tradeRepo = tradeRepo;
     }
 
-    private AllocationMath calcAllocationMath(
+    private AllocationMetric calcUsingAllocationMath(
             Double totalHoldingQuantityByStock,
             Double totalTargetMarketValue,
             Trade trade,
@@ -39,9 +39,9 @@ public class AllocationService {
             Capital capital) {
         log.info("Inside method: calcAllocationMath in class: AllocationService -- Start");
 
-        log.info(String.format("Allocation Math in progress for Account: %s and Stock: %s",
+        log.info("Allocation Math in progress for Account: {} and Stock: {}",
                 capital.getAccount(),
-                trade.getStock()));
+                trade.getStock());
 
         double targetMarketValue = capital.getTargetMarketValue();
         double maxShares = targetMarketValue / holding.getPrice();
@@ -58,7 +58,7 @@ public class AllocationService {
         double suggestedTradeAllocation = suggestedFinalPosition - holding.getQuantity();
         long allocationQuantity = Math.round(suggestedTradeAllocation);
 
-        AllocationMath allocationMath = new AllocationMath(
+        AllocationMetric allocationMetric = new AllocationMetric(
                 capital.getAccount(),
                 holding.getStock(),
                 trade.getType(),
@@ -71,67 +71,67 @@ public class AllocationService {
                 allocationQuantity);
 
         log.info("Inside method: calcAllocationMath in class: AllocationService -- End");
-        return allocationMath;
+        return allocationMetric;
     }
 
-    private List<Allocation> createAllocationData(List<AllocationMath> allocationMathList) {
+    private List<Allocation> createAllocationData(List<AllocationMetric> allocationMetricList) {
 
         log.info("Inside method: createAllocationData in class: AllocationService -- Start");
 
         Map<String, List<Allocation>> stockToAllocationMap = new HashMap<>();
 
         //create map where key is stock and value is list of allocationMath data then iterate over it
-        Map<String, List<AllocationMath>> stockToAllocationMathMap = allocationMathList.stream().collect(Collectors.groupingBy(AllocationMath::getStock));
+        Map<String, List<AllocationMetric>> stockToAllocationMathMap = allocationMetricList.stream().collect(Collectors.groupingBy(AllocationMetric::getStock));
         stockToAllocationMathMap.forEach((s, allocationMaths) -> {
             boolean hasErrorCondition = false;
             boolean existingAllocationQuantityUpdated = false;
 
             //sorting list to start with smallest
-            allocationMaths.sort(Comparator.comparing(AllocationMath::getSUGGESTED_TRADE_ALLOCATION));
+            allocationMaths.sort(Comparator.comparing(AllocationMetric::getSuggestedTradeAllocation));
 
-            for (AllocationMath allocationMath : allocationMaths) {
+            for (AllocationMetric allocationMetric : allocationMaths) {
                 long quantity;
 
                 //check error condition if true then set quantity as 0 and hasErrorCondition flag has true
-                if (allocationMath.getSUGGESTED_FINAL_POSITION() < 0
-                        || allocationMath.getSUGGESTED_FINAL_POSITION() > allocationMath.getMAX_SHARES()
-                        || (allocationMath.getType().equalsIgnoreCase("BUY") && allocationMath.getSUGGESTED_FINAL_POSITION() < allocationMath.getQuantityHeld())
-                        || (allocationMath.getType().equalsIgnoreCase("SELL") && allocationMath.getSUGGESTED_FINAL_POSITION() > allocationMath.getQuantityHeld())) {
+                if (allocationMetric.getSuggestedFinalPosition() < 0
+                        || allocationMetric.getSuggestedFinalPosition() > allocationMetric.getMaxShares()
+                        || (allocationMetric.getType().equalsIgnoreCase("BUY") && allocationMetric.getSuggestedFinalPosition() < allocationMetric.getQuantityHeld())
+                        || (allocationMetric.getType().equalsIgnoreCase("SELL") && allocationMetric.getSuggestedFinalPosition() > allocationMetric.getQuantityHeld())) {
 
                     log.info("Error condition encountered for Account: {}, Stock: {}, Trade Type: {}, " +
                                     "SUGGESTED_FINAL_POSITION: {}, MAX_SHARES: {} and Quantity Held: {}",
-                            allocationMath.getAccount(),
-                            allocationMath.getStock(),
-                            allocationMath.getType(),
-                            allocationMath.getSUGGESTED_FINAL_POSITION(),
-                            allocationMath.getMAX_SHARES(),
-                            allocationMath.getQuantityHeld());
+                            allocationMetric.getAccount(),
+                            allocationMetric.getStock(),
+                            allocationMetric.getType(),
+                            allocationMetric.getSuggestedFinalPosition(),
+                            allocationMetric.getMaxShares(),
+                            allocationMetric.getQuantityHeld());
 
                     quantity = 0;
                     hasErrorCondition = true;
                 } else {
-                    log.info(String.format("Rounding SUGGESTED_TRADE_ALLOCATION value %s for Account: %s and Stock: %s",
-                            allocationMath.getSUGGESTED_TRADE_ALLOCATION(),
-                            allocationMath.getAccount(),
-                            allocationMath.getStock()));
-                    quantity = Math.round(allocationMath.getSUGGESTED_TRADE_ALLOCATION());
+                    log.info("Rounding SUGGESTED_TRADE_ALLOCATION value {} for Account: {} and Stock: {}",
+                            allocationMetric.getSuggestedTradeAllocation(),
+                            allocationMetric.getAccount(),
+                            allocationMetric.getStock());
+                    quantity = Math.round(allocationMetric.getSuggestedTradeAllocation());
                 }
 
                 Allocation allocation;
                 if (hasErrorCondition) {
-                    allocation = new Allocation(allocationMath.getAccount(), allocationMath.getStock(), 0);
-                    if (!CollectionUtils.isEmpty(stockToAllocationMap.get(allocationMath.getStock())) && !existingAllocationQuantityUpdated) {
+                    allocation = new Allocation(allocationMetric.getAccount(), allocationMetric.getStock(), 0);
+                    if (!CollectionUtils.isEmpty(stockToAllocationMap.get(allocationMetric.getStock())) && !existingAllocationQuantityUpdated) {
                         //this means there are allocation data added before -- update quantity for all of them to be zero
-                        stockToAllocationMap.get(allocationMath.getStock()).forEach(x -> x.setQuantity(0));
+                        stockToAllocationMap.get(allocationMetric.getStock()).forEach(x -> x.setQuantity(0));
                         existingAllocationQuantityUpdated = true;
 
                     }
                 } else {
-                    allocation = new Allocation(allocationMath.getAccount(), allocationMath.getStock(), quantity);
+                    allocation = new Allocation(allocationMetric.getAccount(), allocationMetric.getStock(), quantity);
                 }
 
-                stockToAllocationMap.putIfAbsent(allocationMath.getStock(), new ArrayList<>());
-                stockToAllocationMap.get(allocationMath.getStock()).add(allocation);
+                stockToAllocationMap.putIfAbsent(allocationMetric.getStock(), new ArrayList<>());
+                stockToAllocationMap.get(allocationMetric.getStock()).add(allocation);
             }
             ;
         });
@@ -141,10 +141,10 @@ public class AllocationService {
         return stockToAllocationMap.values().stream().flatMap(List::stream).collect(Collectors.toList());
     }
 
-    public List<AllocationMath> createAllocationMathData(List<Trade> tradeList) {
+    public List<AllocationMetric> createAllocationMetric(List<Trade> tradeList) {
         log.info("Inside method: createAllocationMathData in class: AllocationService -- Start");
 
-        List<AllocationMath> allocationMathList = new ArrayList<>();
+        List<AllocationMetric> allocationMetricList = new ArrayList<>();
         for (Trade trade : tradeList) {
 
             //findAllCapitalByStock method will return all capital data and it will filter holdings and target.
@@ -158,19 +158,19 @@ public class AllocationService {
             Double totalTargetMarketValue = capitalListByStock.stream().map(Capital::getTargetMarketValue).mapToDouble(Double::doubleValue).sum();
 
             for (Capital capital : capitalListByStock) {
-                AllocationMath allocationMath
-                        = this.calcAllocationMath(
+                AllocationMetric allocationMetric
+                        = this.calcUsingAllocationMath(
                         totalHoldingQuantityByStock,
                         totalTargetMarketValue,
                         trade,
                         capital.getHoldingList().get(0),
                         capital);
-                allocationMathList.add(allocationMath);
+                allocationMetricList.add(allocationMetric);
             }
         }
 
         log.info("Inside method: createAllocationMathData in class: AllocationService -- End");
-        return allocationMathList;
+        return allocationMetricList;
     }
 
     public List<Allocation> calcTradeAllocation() {
@@ -183,8 +183,8 @@ public class AllocationService {
             return new ArrayList<>();
         }
 
-        List<AllocationMath> allocationMathList = createAllocationMathData(tradeList);
-        List<Allocation> allocationList = this.createAllocationData(allocationMathList);
+        List<AllocationMetric> allocationMetricList = createAllocationMetric(tradeList);
+        List<Allocation> allocationList = this.createAllocationData(allocationMetricList);
 
         log.info("Inside method: calcTradeAllocation in class: AllocationService -- End");
         return allocationList;
