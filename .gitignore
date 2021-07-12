@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+.DS_Store
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/MavenWrapperDownloader.java
