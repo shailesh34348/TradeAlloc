@@ -49,7 +49,7 @@ Update the test data based on different use-case in the input files. Run method 
    
    
 ## Package Structure
-- ###domain
+- ### domain
     - **Allocation.java**
       
     | Account | Stock | Quantity |
