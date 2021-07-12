@@ -51,7 +51,7 @@ Update the test data based on different use-case in the input files. Run method 
 ## Package Structure
 - ### domain
     - **Allocation.java**
-      
+    
     | Account | Stock | Quantity |
     |---------|-------|-----|
     | John | GOOGLE |  +41 |
@@ -65,9 +65,11 @@ Update the test data based on different use-case in the input files. Run method 
     |---------|-------|------|--------------|-------------------|-----------|---------------|------------------------|-------------------------|
     | John | GOOGLE | BUY | 50 | 2000 | 100 | 160 | 91.43 | 41.43 |
 
-- **model** (DB entities with relationships)
-- **repository** (Spring JPA repositories for interacting with DB)
-- **service**
+- ### model 
+    DB entities with relationships
+- ### repository 
+    Spring JPA repositories for interacting with DB
+- ### service
 
    
 
