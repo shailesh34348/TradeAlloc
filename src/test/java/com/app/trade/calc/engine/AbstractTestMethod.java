@@ -11,15 +11,12 @@ import com.app.trade.calc.engine.repository.TargetRepo;
 import com.app.trade.calc.engine.repository.TradeRepo;
 import com.app.trade.calc.engine.util.CsvMappingUtil;
 import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 

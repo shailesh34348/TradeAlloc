@@ -16,8 +16,6 @@ public class AllocationMetric {
     private double suggestedFinalPosition;
     private double suggestedTradeAllocation;
 
-    private long quantity;
-
     public AllocationMetric(
             String account,
             String stock,
@@ -27,8 +25,7 @@ public class AllocationMetric {
             double maxShares,
             double allInPosition,
             double suggestedFinalPosition,
-            double suggestedTradeAllocation,
-            long quantity) {
+            double suggestedTradeAllocation) {
 
         this.account = account;
         this.stock = stock;
@@ -39,6 +36,5 @@ public class AllocationMetric {
         this.allInPosition = allInPosition;
         this.suggestedFinalPosition = suggestedFinalPosition;
         this.suggestedTradeAllocation = suggestedTradeAllocation;
-        this.quantity = quantity;
     }
 }

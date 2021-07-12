@@ -55,7 +55,6 @@ public class AllocationService {
 
         double suggestedFinalPosition = (allInPosition * targetMarketValue) / totalTargetMarketValue;
         double suggestedTradeAllocation = suggestedFinalPosition - holding.getQuantity();
-        long allocationQuantity = Math.round(suggestedTradeAllocation);
 
         AllocationMetric allocationMetric = new AllocationMetric(
                 capital.getAccount(),
@@ -66,8 +65,7 @@ public class AllocationService {
                 maxShares,
                 allInPosition,
                 suggestedFinalPosition,
-                suggestedTradeAllocation,
-                allocationQuantity);
+                suggestedTradeAllocation);
 
         log.info("Inside method: calcAllocationMath in class: AllocationService -- End");
         return allocationMetric;
