@@ -1,5 +1,6 @@
 package com.app.trade.calc.engine;
 
+import com.app.trade.calc.engine.domain.Allocation;
 import com.app.trade.calc.engine.model.Capital;
 import com.app.trade.calc.engine.model.Holding;
 import com.app.trade.calc.engine.model.Target;
@@ -10,10 +11,16 @@ import com.app.trade.calc.engine.repository.TargetRepo;
 import com.app.trade.calc.engine.repository.TradeRepo;
 import com.app.trade.calc.engine.util.CsvMappingUtil;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 public class AbstractTestMethod {
@@ -70,5 +77,24 @@ public class AbstractTestMethod {
         capitalRepo.saveAll(capitalList);
         targetRepo.saveAll(targetList);
         holdingRepo.saveAll(holdingList);
+    }
+
+    public void writeCsv(List<Allocation> allocationList) {
+        String fileName = "src/test/resources/allocations.csv";
+        try (FileWriter writer = new FileWriter(fileName)) {
+            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+            mappingStrategy.setType(Allocation.class);
+
+            String[] columns = {"account", "stock", "quantity"};
+            mappingStrategy.setColumnMapping(columns);
+
+            StatefulBeanToCsv beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withMappingStrategy(mappingStrategy)
+                    .build();
+
+            beanWriter.write(allocationList);
+        } catch (Exception e) {
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
     }
 }

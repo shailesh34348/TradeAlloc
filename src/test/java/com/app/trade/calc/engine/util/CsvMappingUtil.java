@@ -5,7 +5,6 @@ import com.app.trade.calc.engine.model.Holding;
 import com.app.trade.calc.engine.model.Target;
 import com.app.trade.calc.engine.model.Trade;
 import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
-
 import java.util.Map;
 
 public class CsvMappingUtil {
