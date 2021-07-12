@@ -48,7 +48,27 @@ Update the test data based on different use-case in the input files. Run method 
       - Also calculate remainingQuantity by subtracting total(for first time)/remaining shares and quantity. If iterator does not have next value then use remainingQuantity as quantity value for allocation
    
    
-   
+## Package Structure
+- ###domain
+    - **Allocation.java**
+      
+    | Account | Stock | Quantity |
+    |---------|-------|-----|
+    | John | GOOGLE |  +41 |
+    | Sarah | GOOGLE |  +59 |
+    | John | APPLE |  0 |
+    | Sarah | APPLE |  0 |
+  
+    - **AllocationMetric.java**
+      
+    | Account | Stock | Type | QuantityHeld | targetMarketValue | maxShares | allInPosition | suggestedFinalPosition | suggestedTradeAllocation|
+    |---------|-------|------|--------------|-------------------|-----------|---------------|------------------------|-------------------------|
+    | John | GOOGLE | BUY | 50 | 2000 | 100 | 160 | 91.43 | 41.43 |
+
+- **model** (DB entities with relationships)
+- **repository** (Spring JPA repositories for interacting with DB)
+- **service**
+
    
 
 

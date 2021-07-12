@@ -2,6 +2,9 @@ package com.app.trade.calc.engine.service;
 
 import com.app.trade.calc.engine.AbstractTestMethod;
 import com.app.trade.calc.engine.domain.Allocation;
+import com.app.trade.calc.engine.domain.AllocationMetric;
+import com.app.trade.calc.engine.model.Trade;
+import com.app.trade.calc.engine.repository.TradeRepo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,9 @@ public class AllocationServiceTest extends AbstractTestMethod {
     @Autowired
     private AllocationService allocationService;
 
+    @Autowired
+    private TradeRepo tradeRepo;
+
     @Before
     public void init() {
         this.loadDataInDB();
@@ -26,5 +32,12 @@ public class AllocationServiceTest extends AbstractTestMethod {
     public void test_calcTradeAllocationSuccess() {
         List<Allocation> allocationList = this.allocationService.calcTradeAllocation();
         this.writeCsv(allocationList);
+    }
+
+    @Test
+    public void test_createAllocationMetricSuccess() {
+        List<Trade> tradeList = this.tradeRepo.findAll();
+        List<AllocationMetric> allocationMetricList = this.allocationService.createAllocationMetric(tradeList);
+        System.out.println(allocationMetricList.size());
     }
 }
