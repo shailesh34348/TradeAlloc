@@ -82,14 +82,17 @@ public class AllocationService {
 
         //create map where key is stock and value is list of allocationMath data then iterate over it
         Map<String, List<AllocationMetric>> stockToAllocationMathMap = allocationMetricList.stream().collect(Collectors.groupingBy(AllocationMetric::getStock));
-        stockToAllocationMathMap.forEach((s, allocationMaths) -> {
+        stockToAllocationMathMap.forEach((stock, allocationMetrics) -> {
             boolean hasErrorCondition = false;
             boolean existingAllocationQuantityUpdated = false;
+            long remainingQuantity = 0;
 
             //sorting list to start with smallest
-            allocationMaths.sort(Comparator.comparing(AllocationMetric::getSuggestedTradeAllocation));
+            allocationMetrics.sort(Comparator.comparing(AllocationMetric::getSuggestedTradeAllocation));
 
-            for (AllocationMetric allocationMetric : allocationMaths) {
+            Iterator<AllocationMetric> allocationMetricIterator = allocationMetrics.iterator();
+            while (allocationMetricIterator.hasNext()) {
+                AllocationMetric allocationMetric = allocationMetricIterator.next();
                 long quantity;
 
                 //check error condition if true then set quantity as 0 and hasErrorCondition flag has true
@@ -114,7 +117,15 @@ public class AllocationService {
                             allocationMetric.getSuggestedTradeAllocation(),
                             allocationMetric.getAccount(),
                             allocationMetric.getStock());
-                    quantity = Math.round(allocationMetric.getSuggestedTradeAllocation());
+
+                    quantity = !allocationMetricIterator.hasNext() ? remainingQuantity : Math.round(allocationMetric.getSuggestedTradeAllocation());
+
+                    if (remainingQuantity == 0) {
+                        remainingQuantity = Math.round(allocationMetric.getMaxShares()) - quantity;
+                    } else {
+                        remainingQuantity -= quantity;
+                    }
+
                 }
 
                 Allocation allocation;
@@ -133,7 +144,6 @@ public class AllocationService {
                 stockToAllocationMap.putIfAbsent(allocationMetric.getStock(), new ArrayList<>());
                 stockToAllocationMap.get(allocationMetric.getStock()).add(allocation);
             }
-            ;
         });
 
         log.info("Inside method: createAllocationData in class: AllocationService -- End");
