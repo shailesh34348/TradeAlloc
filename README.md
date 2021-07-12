@@ -46,8 +46,8 @@ Update the test data based on different use-case in the input files. Run method 
       - Check for error condition - if yes then set quantity as Zero and set hasErrorCondition == true else Use Math.round function to round **SuggestedTradeAllocation* and save it as allocation quantity
       - if there is error condition then check if there are any older allocation entries for same stock. If yes then set quantity value for all of them to be Zero
       - Also calculate remainingQuantity by subtracting total(for first time)/remaining shares and quantity. If iterator does not have next value then use remainingQuantity as quantity value for allocation
-   
-   
+    
+
 ## Package Structure
 - ### domain
     - **Allocation.java**
