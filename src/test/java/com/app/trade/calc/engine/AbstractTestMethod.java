@@ -48,22 +48,22 @@ public class AbstractTestMethod {
     }
 
     public List<Trade> convertTradeCsvToEntity() {
-        CSVReader csvReader = this.getCsvReader("src/test/resources/trade.csv");
+        CSVReader csvReader = this.getCsvReader("src/test/resources/input/trades.csv");
         return csvToBean.parse(CsvMappingUtil.getTradeCSVMapping(), csvReader);
     }
 
     public List<Capital> convertCapitalCsvToEntity() {
-        CSVReader csvReader = this.getCsvReader("src/test/resources/capital.csv");
+        CSVReader csvReader = this.getCsvReader("src/test/resources/input/capital.csv");
         return csvToBean.parse(CsvMappingUtil.getCapitalCSVMapping(), csvReader);
     }
 
     public List<Target> convertTargetCsvToEntity() {
-        CSVReader csvReader = this.getCsvReader("src/test/resources/target.csv");
+        CSVReader csvReader = this.getCsvReader("src/test/resources/input/targets.csv");
         return csvToBean.parse(CsvMappingUtil.getTargetCSVMapping(), csvReader);
     }
 
     public List<Holding> convertHoldingCsvToEntity() {
-        CSVReader csvReader = this.getCsvReader("src/test/resources/holding.csv");
+        CSVReader csvReader = this.getCsvReader("src/test/resources/input/holdings.csv");
         return csvToBean.parse(CsvMappingUtil.getHoldingCSVMapping(), csvReader);
     }
 
@@ -80,7 +80,7 @@ public class AbstractTestMethod {
     }
 
     public void writeCsv(List<Allocation> allocationList) {
-        String fileName = "src/test/resources/allocations.csv";
+        String fileName = "src/test/resources/output/allocations.csv";
         try (FileWriter writer = new FileWriter(fileName)) {
             ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
             mappingStrategy.setType(Allocation.class);

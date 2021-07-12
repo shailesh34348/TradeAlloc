@@ -25,7 +25,6 @@ public class AllocationServiceTest extends AbstractTestMethod {
     @Test
     public void test_calcTradeAllocationSuccess() {
         List<Allocation> allocationList = this.allocationService.calcTradeAllocation();
-        System.out.println(allocationList.size());
         this.writeCsv(allocationList);
     }
 }
