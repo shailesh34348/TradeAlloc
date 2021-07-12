@@ -11,7 +11,6 @@ public class HoldingService {
     private HoldingRepo holdingRepo;
 
     @Autowired
-
     public HoldingService(HoldingRepo holdingRepo) {
         this.holdingRepo = holdingRepo;
     }
