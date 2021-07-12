@@ -6,4 +6,21 @@ Mary is a very successful portfolio manager specializing in technology stocks. B
 Whenever Mary buys a new stock (for example 100 shares of GOOGLE), she cannot evenly assign 50 shares to John's account and 50 shares to Sarah's account. Mary must split those shares amongst all her client's accounts in accordance with the size of their account while conforming to her client's risk preferences. Mary has been doing all the calculations in Excel spreadsheets and has asked you to automate the process by writing a Java program to implement the rules for allocating her trades.
 
 ## How to test
-Input files: trades.csv, capital.csv, holdings.csv, targets.csv and outputs the file: allocations.csv
+**Input Files**: TradeAlloc/src/test/resources/input/ 
+* trades.csv 
+* capital.csv
+* holdings.csv 
+* targets.csv 
+
+**Output File**: TradeAlloc/src/test/resources/output/
+* allocations.csv
+
+Update the test data based on different use-case in the input files. Run method **test_calcTradeAllocationSuccess** in test class **AllocationServiceTest**. 
+
+**Test execution Steps**:
+* Load data from input files to in memory H2 DB
+* Calls **calcTradeAllocation** method in class **AllocationService**
+* Writes List<Allocation> in allocations.csv file
+
+
+
