@@ -1,4 +1,4 @@
-package com.app.trade.calc.engine.service;
+package com.app.trade.calc.engine;
 
 import com.app.trade.calc.engine.model.Capital;
 import com.app.trade.calc.engine.model.Holding;

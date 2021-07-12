@@ -1,4 +1,4 @@
-package com.app.trade.calc.engine.service;
+package com.app.trade.calc.engine;
 
 import com.app.trade.calc.engine.domain.Allocation;
 import com.app.trade.calc.engine.model.Capital;
@@ -6,6 +6,8 @@ import com.app.trade.calc.engine.repository.CapitalRepo;
 import com.app.trade.calc.engine.model.Holding;
 import com.app.trade.calc.engine.model.Target;
 import com.app.trade.calc.engine.model.Trade;
+import com.app.trade.calc.engine.service.AllocationService;
+import com.app.trade.calc.engine.service.CaptialService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +29,6 @@ public class CsvConversionTest extends AbstractTestMethod {
     public void testTradeCSVConversion() {
 
         List<Trade> trades = this.convertTradeCsvToEntity();
-        // print details of Bean object
         for (Trade trade : trades) {
             System.out.println("Stock: " +trade.getStock()+ " Type: " +trade.getType() + " Quantity: " + trade.getQuantity() + " Price: " + trade.getPrice());
         }
@@ -37,9 +38,8 @@ public class CsvConversionTest extends AbstractTestMethod {
     public void testCapitalCSVConversion() {
 
         List<Capital> capitalList = this.convertCapitalCsvToEntity();
-        // print details of Bean object
         for (Capital capital : capitalList) {
-            System.out.println("Account: " + capital.getAccount() + " Captial: " + capital.getCapital());
+            System.out.println("Account: " + capital.getAccount() + " Capital: " + capital.getCapital());
         }
     }
 
@@ -47,9 +47,8 @@ public class CsvConversionTest extends AbstractTestMethod {
     public void testTargetCSVConversion() {
 
         List<Target> targetList = this.convertTargetCsvToEntity();
-        // print details of Bean object
         for (Target target : targetList) {
-            System.out.println("Stock: " +target.getStock() + " Account: " +target.getCapital().getAccount() + " percent: " +target.getPercent());
+            System.out.println("Stock: " +target.getStock() + " percent: " +target.getPercent());
         }
     }
 
@@ -77,7 +76,6 @@ public class CsvConversionTest extends AbstractTestMethod {
     public void testFind() {
         this.loadDataInDB();
         List<Capital> capitalList = this.captialService.findAllCapitalByStock("GOOGLE");
-        //List<Capital> capitalList = this.tradeAllocatorService.findByHoldingListStock("GOOGLE");
         System.out.println(capitalList.size());
     }
 }
