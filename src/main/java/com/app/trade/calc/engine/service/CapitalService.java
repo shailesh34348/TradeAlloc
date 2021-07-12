@@ -12,11 +12,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class CaptialService {
+public class CapitalService {
     private CapitalRepo capitalRepo;
 
     @Autowired
-    public CaptialService(CapitalRepo capitalRepo) {
+    public CapitalService(CapitalRepo capitalRepo) {
         this.capitalRepo = capitalRepo;
     }
 

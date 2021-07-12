@@ -17,16 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class AllocationService {
 
-    private CaptialService captialService;
+    private CapitalService capitalService;
     private HoldingService holdingService;
     private TradeRepo tradeRepo;
 
     @Autowired
     public AllocationService(
-            CaptialService captialService,
+            CapitalService capitalService,
             HoldingService holdingService,
             TradeRepo tradeRepo) {
-        this.captialService = captialService;
+        this.capitalService = capitalService;
         this.holdingService = holdingService;
         this.tradeRepo = tradeRepo;
     }
@@ -47,7 +47,6 @@ public class AllocationService {
         double maxShares = targetMarketValue / holding.getPrice();
         double allInPosition = totalHoldingQuantityByStock;
 
-        //
         if (trade.getType().equalsIgnoreCase("BUY")) {
             allInPosition += trade.getQuantity();
         } else {
@@ -159,7 +158,7 @@ public class AllocationService {
 
             //findAllCapitalByStock method will return all capital data and it will filter holdings and target.
             //Only one holding and target data should be available for given account and stock
-            List<Capital> capitalListByStock = this.captialService.findAllCapitalByStock(trade.getStock());
+            List<Capital> capitalListByStock = this.capitalService.findAllCapitalByStock(trade.getStock());
 
             //For given stock get all the holdings and do sum
             Double totalHoldingQuantityByStock = this.holdingService.getTotalQuantity(trade.getStock());
