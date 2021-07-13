@@ -8,6 +8,8 @@ Whenever Mary buys a new stock (for example 100 shares of GOOGLE), she cannot ev
 ## Command Line Execution
 Execution Command: java -jar {jar name}.jar --tradeFilePath={trades.csv} --capitalFilePath={capital.csv} --holdingFilePath={holdings.csv} --targetFilePath={targets.csv} --allocationFilePath={allocations.csv}
 
+Latest Jar: [Download](https://drive.google.com/file/d/1EUaB86xoGTxRpr_QQvIQlDKJeGmUtkfh/view?usp=drive_web)
+
 **Example**:
 
 java -jar engine-0.0.1-SNAPSHOT.jar --tradeFilePath=/Users/shaileshsingh/Documents/input/trades.csv --capitalFilePath=/Users/shaileshsingh/Documents/input/capital.csv --holdingFilePath=/Users/shaileshsingh/Documents/input/holdings.csv --targetFilePath=/Users/shaileshsingh/Documents/input/targets.csv --allocationFilePath=/Users/shaileshsingh/Documents/output/allocations.csv
