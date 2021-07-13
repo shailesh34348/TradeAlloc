@@ -67,6 +67,29 @@ public class AllocationService {
                 suggestedFinalPosition,
                 suggestedTradeAllocation);
 
+        log.info("{}---------------------------------{}", System.lineSeparator(), System.lineSeparator());
+        log.info("{}Account: {}.{}" +
+                        "Stock: {}.{}" +
+                        "Type: {}.{}" +
+                        "Quantity Held: {}.{}" +
+                        "TARGET_MARKET_VALUE: {}.{}" +
+                        "SUM_TARGET_MARKET_VALUE: {}.{}" +
+                        "MAX_SHARES: {}.{}" +
+                        "ALL_IN_POSITION: {}.{}" +
+                        "SUGGESTED_FINAL_POSITION: {}.{}" +
+                        "SUGGESTED_TRADE_ALLOCATION: {}.{}",
+                System.lineSeparator(), capital.getAccount(), System.lineSeparator(),
+                holding.getStock(), System.lineSeparator(),
+                trade.getType(), System.lineSeparator(),
+                holding.getQuantity(), System.lineSeparator(),
+                targetMarketValue, System.lineSeparator(),
+                totalTargetMarketValue, System.lineSeparator(),
+                maxShares, System.lineSeparator(),
+                allInPosition, System.lineSeparator(),
+                suggestedFinalPosition, System.lineSeparator(),
+                suggestedTradeAllocation, System.lineSeparator());
+        log.info("{}---------------------------------{}", System.lineSeparator(), System.lineSeparator());
+
         log.info("Inside method: calcAllocationMath in class: AllocationService -- End");
         return allocationMetric;
     }

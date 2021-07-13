@@ -5,22 +5,47 @@ Mary is a very successful portfolio manager specializing in technology stocks. B
 
 Whenever Mary buys a new stock (for example 100 shares of GOOGLE), she cannot evenly assign 50 shares to John's account and 50 shares to Sarah's account. Mary must split those shares amongst all her client's accounts in accordance with the size of their account while conforming to her client's risk preferences. Mary has been doing all the calculations in Excel spreadsheets and has asked you to automate the process by writing a Java program to implement the rules for allocating her trades.
 
-## How to test
-**Input Files**: TradeAlloc/src/test/resources/input/ 
-* trades.csv 
-* capital.csv
-* holdings.csv 
-* targets.csv 
+## Command Line Execution
+Execution Command: java -jar {jar name}.jar --tradeFilePath={trades.csv} --capitalFilePath={capital.csv} --holdingFilePath={holdings.csv} --targetFilePath={targets.csv} --allocationFilePath={allocations.csv}
 
-**Output File**: TradeAlloc/src/test/resources/output/
-* allocations.csv
+**Example**:
 
-Update the test data based on different use-case in the input files. Run method **test_calcTradeAllocationSuccess** in test class **AllocationServiceTest**. 
+java -jar engine-0.0.1-SNAPSHOT.jar --tradeFilePath=/Users/shaileshsingh/Documents/input/trades.csv --capitalFilePath=/Users/shaileshsingh/Documents/input/capital.csv --holdingFilePath=/Users/shaileshsingh/Documents/input/holdings.csv --targetFilePath=/Users/shaileshsingh/Documents/input/targets.csv --allocationFilePath=/Users/shaileshsingh/Documents/output/allocations.csv
 
-**Test execution Steps**:
-* Load data from input files to in memory H2 DB
-* Calls **calcTradeAllocation** method in class **AllocationService**
-* Writes List<Allocation> in allocations.csv file
+## CSV Format
+1. ### trades.csv
+   | Stock | Type | Quantity | Price |
+   |------|---------|--------|-------|
+   | GOOGLE | BUY | 100 | $20 |
+   | APPLE | SELL | 20 | $10 |
+2. ### capital.csv
+   | Account | Capital |
+   |---------|---------|
+   | John | $50,000 |
+   | Sarah | $150,000 |
+3. ### holdings.csv
+   | Account | Stock | Quantity | Price | Market Value |
+   |---------|-------|----------|-------|--------------|
+   | John | GOOGLE | 50 | $20 | $1,000 |
+   | Sarah | GOOGLE | 10 | $20 | $200 |
+   | John | APPLE | 25 | $10 | $250 |
+   | Sarah | APPLE | 50 | $10 | $500 |
+4. ### targets.csv
+   | Stock | Account | target_percent |
+   |------|---------|--------|
+   | GOOGLE | John | 4 |
+   | GOOGLE | Sarah | 1 |
+   | APPLE | John | 1.5 |
+   | APPLE | Sarah | 2 |
+5. ### allocations.csv
+   | Account | Stock | Quantity |
+   |---------|-------|-----|
+   | John | GOOGLE |  +41 |
+   | Sarah | GOOGLE |  +59 |
+   | John | APPLE |  0 |
+   | Sarah | APPLE |  0 |
+
+
 
 ## Implementation
 
@@ -52,13 +77,6 @@ Update the test data based on different use-case in the input files. Run method 
 - ### domain
     - **Allocation.java**
     
-    | Account | Stock | Quantity |
-    |---------|-------|-----|
-    | John | GOOGLE |  +41 |
-    | Sarah | GOOGLE |  +59 |
-    | John | APPLE |  0 |
-    | Sarah | APPLE |  0 |
-  
     - **AllocationMetric.java**
       
     | Account | Stock | Type | QuantityHeld | targetMarketValue | maxShares | allInPosition | suggestedFinalPosition | suggestedTradeAllocation|
